@@ -68,14 +68,11 @@ WSGI_APPLICATION = 'hrms.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hrmsportal',  # Your database name
-        'USER': 'root',           # XAMPP MySQL default user
-        'PASSWORD': '',           # XAMPP MySQL default password (empty)
-        'HOST': '127.0.0.1',      # localhost
-        'PORT': '3306',           # MySQL default port
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 

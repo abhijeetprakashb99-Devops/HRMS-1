@@ -1,0 +1,48 @@
+services:
+
+  hrms_backend:
+    build:
+        context: ./backend-project
+        dockerfile: Dockerfile
+
+    container_name: hrms-portal-backend
+    command: gunicorn hrms.wsgi:application --bind 0.0.0.0:9001
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    ports:
+      - "9001:9001"
+    env_file:
+      - ./backend-project/.env
+    depends_on:
+      - hrms_db
+      - hrms_redis
+    restart: unless-stopped
+
+
+  hrms_db:
+    image: mysql:8.0
+    container_name: hrms-portal-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: hrms_db
+      MYSQL_USER: hrms_user
+      MYSQL_PASSWORD: strongpassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+
+  hrms_redis:
+    image: redis:7
+    container_name: hrms-portal-redis
+    restart: unless-stopped
+
+
+volumes:
+  mysql_data:
+  static_volume:
+  media_volume:
+
