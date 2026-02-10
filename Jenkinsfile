@@ -20,11 +20,16 @@ pipeline {
             }
         }
 
-        stage('Stop Old Containers') {
-            steps {
-                sh 'docker-compose down'
-            }
-        }
+        stage('Clean Old Containers') {
+    	    steps {
+        	sh '''
+        	docker rm -f hrms-portal-db || true
+        	docker rm -f hrms-portal-redis || true
+        	docker rm -f hrms_backend || true
+        	docker-compose down || true
+        	'''
+    	    }
+	}
 
         stage('Start Containers') {
             steps {
