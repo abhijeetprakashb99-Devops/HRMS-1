@@ -17,9 +17,6 @@ pipeline {
             steps {
                 sh '''
                 docker-compose down --volumes --remove-orphans || true
-                docker rm -f hrms-portal-backend || true
-                docker rm -f hrms-portal-db || true
-                docker rm -f hrms-portal-redis || true
                 '''
             }
         }
@@ -27,6 +24,19 @@ pipeline {
         stage('Start Containers') {
             steps {
                 sh 'docker-compose up -d'
+            }
+        }
+
+        stage('Wait for Database') {
+            steps {
+                sh '''
+                echo "Waiting for MySQL to be ready..."
+                until docker exec hrms-portal-db mysqladmin ping -h"localhost" --silent; do
+                    echo "Database is not ready yet..."
+                    sleep 5
+                done
+                echo "Database is ready!"
+                '''
             }
         }
 
