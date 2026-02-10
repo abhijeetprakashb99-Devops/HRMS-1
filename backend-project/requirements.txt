@@ -9,3 +9,8 @@ python-dotenv
 Django-cors-headers
 
 
+pymysql
+openpyxl
+cryptography
+requests
+Pillow

@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# ⭐ ADD THIS BLOCK (VERY IMPORTANT)
+# System deps for MySQL + Python packages
 RUN apt-get update && apt-get install -y \
     pkg-config \
     default-libmysqlclient-dev \
@@ -19,4 +19,7 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
+
+# ✅ THIS LINE IS REQUIRED
+CMD ["gunicorn", "hrms.wsgi:application", "--bind", "0.0.0.0:8000"]
 
