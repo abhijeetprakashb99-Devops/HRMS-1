@@ -12,6 +12,8 @@ services:
     depends_on:
       - hrms_db
       - hrms_redis
+    volumes:
+      - static_volume:/staticfiles   
     restart: unless-stopped
 
   hrms_frontend:
@@ -50,3 +52,4 @@ volumes:
   mysql_data:
   static_volume:
   media_volume:
+
